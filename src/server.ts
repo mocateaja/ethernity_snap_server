@@ -41,20 +41,21 @@ app.route('/get/:request')
     //const request_data:any = await encrypt(JSON.stringify(content), "HALO")
     //res.send(request_data)
   
-    if (preq === "image") {
+    if (preq === "images") {
       const data = await encrypt(await database.get_all_image({
-        offset: decrypted_data.offset,
-        limit: decrypted_data.limit
+        offset: decrypted_data.offset, // Diambil dari baris data ke berapa
+        limit: decrypted_data.limit // Maksimal banyaknya data di ambil
       }), secret_token);
       res.send(data);
-    } else if (preq === "tag") {
+    } else if (preq === "tags") {
       const data = await encrypt(await database.get_all_tag(), secret_token);
       res.send(data);
     } else if (preq === "search") {
       const data = await encrypt(await database.search_image({ key:decrypted_data.search_key }), secret_token)
       res.send(data);
     } //else if (preq === "start") await database.start() // Hanya utnuk awalan saja! Dan akan segera dihapus setelah tabel dibuat
-    
+    else if (preq === "encrypt") {res.send(await encrypt(content, secret_token))}
+    else if (preq === "decrypt") {res.send(await decrypt(content, secret_token))}
     res.status(404).send({message: "Unable to find your request!"})
   })
 
@@ -86,10 +87,10 @@ app.route('/post/:request')
     const { content }: any = request.body;
     const request_data: any = await decrypt(content, secret_token);
     const decrypted_data = await request_data;
-    
+/*     
     if (!decrypted_data.data?.user_id) {
       res.status(401).send({ error: "Authentication required. Please log in." })
-    }  
+    }   */
 
     if (preq === "user") {
       const response = await database.add_user({
@@ -105,7 +106,8 @@ app.route('/post/:request')
         description: decrypted_data?.description || "",
         sender_id: decrypted_data.sender_id,
         tag_id: decrypted_data.tag_id,
-        created_at: decrypted_data.created_at
+        created_at: decrypted_data.created_at,
+        data: decrypted_data.data
       });
       response === "success" ? res.send({message: "Request success!"}) : res.send({message: "Request failed!"})
     }

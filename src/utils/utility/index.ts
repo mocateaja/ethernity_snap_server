@@ -136,10 +136,9 @@ const encrypt = async (value: any, secret_token: string) => {
 const decrypt = async (value: any, secret_token: string) => {
   try {
     const base64Decoded = CryptoJS.enc.Base64.parse(value).toString(CryptoJS.enc.Utf8);
-    const deryptedData = CryptoJS.AES.decrypt(base64Decoded, secret_token);
-    const finalData = JSON.parse(deryptedData.toString(CryptoJS.enc.Utf8));
-    const data = JSON.parse(finalData);
-    return data;
+    const decryptedData = CryptoJS.AES.decrypt(base64Decoded, secret_token);
+    const finalData = JSON.parse(decryptedData.toString(CryptoJS.enc.Utf8));
+    return finalData;
   } catch (error) {
     return 'failed';
   }
