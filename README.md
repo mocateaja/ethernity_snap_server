@@ -5,7 +5,7 @@ PARENT API = endpoint/{request_type}/{request}
 
 All requests to the API must be encrypted. Client should encrypt the data before sending it to the API.
 
-## Encryption Process
+## Example Encryption Process
 Before encryption:
 {
     offset: 0,
