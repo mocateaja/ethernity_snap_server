@@ -36,7 +36,7 @@ After encryption (sent to API):
 
 1. Create User
    - URL: endpoint/post/user
-   - Body: { user_name: string (8), password: string, created_at: string }
+   - Body: { user_name: string, password: string, created_at: string }
 
 2. Create Image
    - URL: endpoint/post/image
