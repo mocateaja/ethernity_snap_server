@@ -64,12 +64,12 @@ app.route('/get/:request')
        if (!decrypted_data.offset && !decrypted_data.limit) {
         res.status(404).send({message: "There's something wrong with your body request!"})
       } 
-      const data = database.get_all_image({
+      const data = await database.get_all_image({
         offset: decrypted_data.offset, // Diambil dari baris data ke berapa
         limit: decrypted_data.limit // Maksimal banyaknya data di ambil
       });
-      const encryptedData = encrypt(data, secret_token);
-      res.status(200).send(data);
+      const encryptedData = await encrypt(data, secret_token);
+      res.status(200).send(encryptedData);
     } else if (preq === "tags") {
       const data = await encrypt(await database.get_all_tag(), secret_token);
       res.send(data);
