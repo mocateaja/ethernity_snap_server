@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "typeRoots": ["src/types/env.d.ts", "./node_modules/@types"],
     "allowJs": true,
     "target": "ESNext",
     "module": "Preserve",

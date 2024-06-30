@@ -1,6 +1,5 @@
 import sql from '../connection';
 import sqlcmd from '../sql';
-import fs from 'fs';
 
 const database = {
   start: async() => {

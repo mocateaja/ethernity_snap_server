@@ -1,6 +1,7 @@
+import { config } from 'dotenv';
+config();
 import express, { Request, Response } from 'express';
 import fs from 'fs';
-import 'dotenv/config';
 import { secureRouter, wrapResponse, selectToken, encrypt, decrypt } from './utils/utility';
 import database from './database/router';
 import rateLimit from 'express-rate-limit'
@@ -9,7 +10,6 @@ import cors from 'cors'
 const secret_token = selectToken() || '';
 
 const app = express();
-
 
 const corsOptions = {
   origin: 'http://localhost:3000',
@@ -24,9 +24,9 @@ const apiLimiter = rateLimit({
 });
 
 const configFile = fs.readFileSync('server.config', 'utf8');
-const config = JSON.parse(configFile);
-const port = config.port;
-const address = config.address;
+const configuration = JSON.parse(configFile);
+const port = configuration.port;
+const address = configuration.address;
 
 app.use(express.json());
 
