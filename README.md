@@ -3,12 +3,9 @@
 ## Base URL
 PARENT API = endpoint/{request_type}/{request}
 
-<<<<<<< HEAD
 get = For get some data but still using POST methode
 post = For insert some data
 
-=======
->>>>>>> ba398a37f27805739ed558a1664058564f1f8e07
 All requests to the API must be encrypted. Client should encrypt the data before sending it to the API.
 
 ## Example Encryption Process
