@@ -144,6 +144,35 @@ const decrypt = async (value: any, secret_token: string) => {
   }
 };
 
+/* 
+
+SIMPLE ENCRYPTION. JUST FOR ARCHIVE
+
+const encrypt = async (value: any, secret_token: string) => {
+  try {
+    const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(value), secret_token).toString();
+    //const base64Encoded = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(encryptedData));
+    //return base64Encoded; 
+    return encryptedData
+  } catch (error) {
+    return 'failed';
+  }
+};
+const decrypt = async (value: any, secret_token: string) => {
+  try {
+    //const base64Decoded = CryptoJS.enc.Base64.parse(value).toString(CryptoJS.enc.Utf8);
+    //const decryptedData = CryptoJS.AES.decrypt(base64Decoded, secret_token);
+    
+   const decryptedData = CryptoJS.AES.decrypt(value, secret_token); 
+   const finalData = JSON.parse(decryptedData.toString(CryptoJS.enc.Utf8));
+    return finalData;
+  } catch (error) {
+    return 'failed';
+  }
+};
+
+*/
+
 //////////////////////////////////////////////////////////////////
 
 const { PRIMARY_TOKEN, SECONDARY_TOKEN } = process.env;

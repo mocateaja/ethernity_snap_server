@@ -80,11 +80,12 @@ const database = {
     }
   },
   search_image: async({ key } : { key: string}) => {
+    key = key.toLowerCase()
     try {
       const data = await sql.unsafe(`
         ${sqlcmd.search_image}
         WHERE 
-          LOWER(images.title) LIKE LOWER('%${key}%')
+          LOWER(images.title) LIKE '%${key}%'
         GROUP BY 
           images.image_id, 
           images.title, 

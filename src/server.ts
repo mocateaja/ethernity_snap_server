@@ -51,9 +51,9 @@ app.route('/get/:request')
 
     const { content }: any = request.body;
     const request_data: any = await decrypt(content, secret_token);
-    if (request_data === 'failed') {
+/*     if (request_data === 'failed') {
       return res.status(400).send({ message: "Failed to decrypt data" });
-    }
+    } Inactivate because still on development*/
     const decrypted_data = await request_data;
     
     //Purpose for debugging only. Do not activate this code!
@@ -71,11 +71,13 @@ app.route('/get/:request')
       const encryptedData = await encrypt(data, secret_token);
       res.status(200).send(encryptedData);
     } else if (preq === "tags") {
-      const data = await encrypt(await database.get_all_tag(), secret_token);
-      res.send(data);
+      const data = await database.get_all_tag();
+      const encryptedData = await encrypt(data, secret_token);
+      res.status(200).send(encryptedData);
     } else if (preq === "search") {
-      const data = await encrypt(await database.search_image({ key:decrypted_data.search_key }), secret_token)
-      res.send(data);
+      const data = await database.search_image({ key: decrypted_data.search_key })
+      const encryptedData = await encrypt(data, secret_token);
+      res.status(200).send(encryptedData);
     } //else if (preq === "start") await database.start() // Hanya utnuk awalan saja! Dan akan segera dihapus setelah tabel dibuat
     else if (preq === "encrypt") {res.status(200).send(await encrypt(request.body, secret_token))}
     else if (preq === "decrypt") {res.status(200).send(await decrypt(content, secret_token))}
