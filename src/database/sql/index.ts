@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS users (
     user_id CHAR(8) PRIMARY KEY NOT NULL,
     user_name VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    created_at DATE NOT NULL
+    created_at TIMETSAMPZ NOT NULL
 );
 CREATE TABLE IF NOT EXISTS tags (
     id SERIAL PRIMARY KEY,
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS images (
     sender_id CHAR(8) NOT NULL,
     sender_name VARCHAR(255) NOT NULL,
     tag_id INT[],
-    created_at DATE NOT NULL,
+    created_at TIMETSAMPZ NOT NULL,
     data TEXT NOT NULL,
     FOREIGN KEY (sender_id) REFERENCES users(user_id)
 );
