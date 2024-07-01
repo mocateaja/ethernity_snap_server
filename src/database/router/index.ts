@@ -100,6 +100,18 @@ const database = {
     } catch (error) {
       console.log(error);
     }
+  },
+  check_user_account: async({ user_id, password } : { user_id: string, password: string}) => {
+    try {
+      const data = await sql.unsafe(`
+        ${sqlcmd.check_user_account}
+        WHERE user_id = '${user_id}' AND password = '${password}'
+        ) as user_exists
+      `)
+      return data
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 

@@ -87,6 +87,11 @@ FROM
 INNER JOIN 
     tags ON tags.id = ANY(images.tag_id)
     `,
+    check_user_account: `
+SELECT EXISTS (
+    SELECT 1
+    FROM users
+    `
 };
 
 export default sqlcmd;

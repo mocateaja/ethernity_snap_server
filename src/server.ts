@@ -78,7 +78,16 @@ app.route('/get/:request')
       const data = await database.search_image({ key: decrypted_data.search_key })
       const encryptedData = await encrypt(data, secret_token);
       res.status(200).send(encryptedData);
-    } //else if (preq === "start") await database.start() // Hanya utnuk awalan saja! Dan akan segera dihapus setelah tabel dibuat
+    } 
+    else if (preq === "check_user_account") {
+      const data = await database.check_user_account({
+        user_id: decrypted_data.user_id,
+        password: decrypted_data.password
+      })
+      const encryptedData = await encrypt(data, secret_token);
+      res.status(200).send(encryptedData)
+    }
+    //else if (preq === "start") await database.start() // Hanya utnuk awalan saja! Dan akan segera dihapus setelah tabel dibuat
     else if (preq === "encrypt") {res.status(200).send(await encrypt(request.body, secret_token))}
     else if (preq === "decrypt") {res.status(200).send(await decrypt(content, secret_token))}
     res.status(404).send({message: "Unable to find your request!"})

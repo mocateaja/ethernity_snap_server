@@ -59,3 +59,7 @@ Note:
 - All request bodies should be encrypted before sending to the API.
 - The API expects the encrypted data in the 'content' field of the request body.
 - Follow the specified data types and length restrictions for fields like user_name and image_id.
+
+## Note!
+
+This is still on development and so much change in here because the main app and this README.md is not always show or announce the new feature in here!
