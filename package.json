@@ -5,7 +5,7 @@
   "main": "./src/index.ts",
   "type": "module",
   "scripts": {
-    "start": "node --loader ts-node/esm --experimental-specifier-resolution=node --no-warnings src/app.ts",
+    "start": "nodemon",
     "dev": "nodemon",
     "build": "rimraf dist && tsc",
     "ts.check": "tsc --project tsconfig.json",
@@ -13,11 +13,6 @@
     "lint": "eslint . --ext .ts",
     "format": "prettier --write \"src/**/*.ts\""
   },
-  "pre-commit": [
-    "ts.check",
-    "build",
-    "add-build"
-  ],
   "keywords": [],
   "author": "Mocateaja",
   "license": "ISC",
