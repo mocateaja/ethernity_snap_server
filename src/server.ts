@@ -37,6 +37,14 @@ app.use(express.json());
     ...: ...
   }
 */
+app.get("/", async(request: Request, response: Response) => {
+  response.send({
+    name: "Ethernity App Server",
+    status: "Active",
+    defender: "Active",
+    version: "v1.1"
+  })
+})
 
 app.route('/get/:request')
   .get(async(request: Request, response: Response) => {
