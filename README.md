@@ -63,3 +63,7 @@ Note:
 ## Note!
 
 This is still on development and so much change in here because the main app and this README.md is not always show or announce the new feature in here!
+
+## Announcment
+
+Finnaly this REST API has been deployed! 
