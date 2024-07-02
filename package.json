@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node --loader ts-node/esm --experimental-specifier-resolution=node --no-warnings src/app.ts",
     "dev": "nodemon",
-    "build": "tsc",
+    "build": "tsc express build --output public",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write \"src/**/*.ts\""
   },
