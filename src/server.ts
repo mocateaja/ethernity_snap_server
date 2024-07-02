@@ -37,8 +37,8 @@ app.use(express.json());
     ...: ...
   }
 */
-app.get("/", async(request: Request, response: Response) => {
-  response.send({
+app.get('/', (request: Request, response: Response) => {
+  return response.send({
     name: "Ethernity App Server",
     status: "Active",
     defender: "Active",
