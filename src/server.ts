@@ -88,8 +88,8 @@ app.route('/get/:request')
       res.status(200).send(encryptedData)
     }
     //else if (preq === "start") await database.start() // Hanya utnuk awalan saja! Dan akan segera dihapus setelah tabel dibuat
-    else if (preq === "encrypt") {res.status(200).send(await encrypt(request.body, secret_token))}
-    else if (preq === "decrypt") {res.status(200).send(await decrypt(content, secret_token))}
+    //else if (preq === "encrypt") {res.status(200).send(await encrypt(request.body, secret_token))}
+    //else if (preq === "decrypt") {res.status(200).send(await decrypt(content, secret_token))}
     res.status(404).send({message: "Unable to find your request!"})
   })
   
