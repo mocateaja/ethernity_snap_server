@@ -11,12 +11,12 @@ const secret_token = selectToken() || '';
 
 const app = express();
 
-const corsOptions = {
-  origin: 'http://localhost:3000',
+/* const corsOptions = {
+  origin: '*',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
-
-app.use(cors(corsOptions));
+USED WHEN THE FINAL PRODUCTS IS READY
+app.use(cors(corsOptions)); */
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 menit
