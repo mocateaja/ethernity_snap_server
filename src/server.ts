@@ -164,6 +164,6 @@ app.route('/post/:request')
   })
 app.use('/post/:request', apiLimiter);
 
-app.listen(port, address, async () => {
-  console.log(`Server started at ${address}:${port}`);
+app.listen(port, () => {
+  console.log(`Server started at:${port}`);
 });
