@@ -9,14 +9,14 @@
     "esModuleInterop": true,
     "strict": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "./",
     "baseUrl": ".",
     "noEmit": true,
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@/*": ["node_modules/*", "src/types/*", "./src/*"]
+      "@/*": ["node_modules/*", "src/types/*", "./src/*", "./api/*"]
     }
   },
   "include": ["src/**/*.ts","src/utils/utility/*.ts","**/*.ts", "src/testing"],

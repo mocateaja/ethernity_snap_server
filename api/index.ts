@@ -2,8 +2,8 @@ import { config } from 'dotenv';
 config();
 import express, { Request, Response } from 'express';
 import fs from 'fs';
-import { secureRouter, wrapResponse, selectToken, encrypt, decrypt } from './utils/utility';
-import database from './database/router';
+import { secureRouter, wrapResponse, selectToken, encrypt, decrypt } from '../src/utils/utility';
+import database from '../src/database/router';
 import rateLimit from 'express-rate-limit'
 import cors from 'cors'
 
