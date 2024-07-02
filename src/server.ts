@@ -23,10 +23,10 @@ const apiLimiter = rateLimit({
   max: 500 // batas 100 permintaan per windowMs
 });
 
-const configFile = fs.readFileSync('server.config', 'utf8');
-const configuration = JSON.parse(configFile);
-const port = configuration.port;
-const address = configuration.address;
+/* const configFile = fs.readFileSync('server.config', 'utf8');
+const configuration = JSON.parse(configFile); */
+const port = 8080//configuration.port;
+const address = "localhost"//configuration.address;
 
 app.use(express.json());
 
