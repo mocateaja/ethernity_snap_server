@@ -4,17 +4,18 @@ import express, { Request, Response } from 'express';
 import { secureRouter, wrapResponse, selectToken, encrypt, decrypt } from './utils/utility';
 import database from './database/router';
 import rateLimit from 'express-rate-limit'
+import cors from 'cors'
 
 const secret_token = selectToken() || '';
 
 const app = express();
 
-/* const corsOptions = {
+const corsOptions = {
   origin: '*',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
-USED WHEN THE FINAL PRODUCTS IS READY
-app.use(cors(corsOptions)); */
+
+app.use(cors(corsOptions)); 
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 menit
