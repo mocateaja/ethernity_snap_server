@@ -79,8 +79,7 @@ app.route('/get/:request')
       res.status(200).send(encryptedData);
     } else if (preq === "tags") {
       const data = await database.get_all_tag();
-      const encryptedData = await encrypt(data, secret_token);
-      res.status(200).send(encryptedData);
+      res.status(200).send(data);
     } else if (preq === "search") {
       const data = await database.search_image({ key: decrypted_data.search_key })
       const encryptedData = await encrypt(data, secret_token);
