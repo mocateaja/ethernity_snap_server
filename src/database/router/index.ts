@@ -28,13 +28,15 @@ const database = {
     tag_id,
     created_at,
     data,
+    data_hash
   }: {
     [key: string]: string | number[] | Date | '';
   }) => {
     try {
       const response = await sql.unsafe(`
         ${sqlcmd.add_image}
-        VALUES ('${image_id}','${title}','${description}','${sender_id}',(SELECT user_name FROM users WHERE user_id = '${sender_id}'),ARRAY[${tag_id}],'${created_at}','${data}');
+        VALUES ('${image_id}','${title}','${description}','${sender_id}',(SELECT user_name FROM users WHERE user_id = '${sender_id}'),ARRAY[${tag_id}],'${created_at}','${data}','${data_hash}')
+        ON CONFLICT (data_hash) DO NOTHING;
       `);
       return response ? "success" : "failed"
     } catch (error) {
@@ -107,6 +109,18 @@ const database = {
         ${sqlcmd.check_user_account}
         WHERE user_id = '${user_id}' AND password = '${password}'
         ) as user_exists
+      `)
+      return data
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  signin: async({ user_name, password } : { user_name: string, password: string}) => {
+    try {
+      const data = await sql.unsafe(`
+        SELECT *
+        FROM users
+        WHERE user_name = '${user_name}' AND password = '${password}'
       `)
       return data
     } catch (error) {

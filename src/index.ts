@@ -84,10 +84,16 @@ app.route('/get/:request')
       const data = await database.search_image({ key: decrypted_data.search_key })
       const encryptedData = await encrypt(data, secret_token);
       res.status(200).send(encryptedData);
-    } 
-    else if (preq === "check_user_account") {
+    } else if (preq === "check_user_account") {
       const data = await database.check_user_account({
         user_id: decrypted_data.user_id,
+        password: decrypted_data.password
+      })
+      const encryptedData = await encrypt(data, secret_token);
+      res.status(200).send(encryptedData)
+    } else if (preq === "signin") {
+      const data = await database.signin({
+        user_name: decrypted_data.user_name,
         password: decrypted_data.password
       })
       const encryptedData = await encrypt(data, secret_token);
@@ -141,14 +147,17 @@ app.route('/post/:request')
       });
       response === "success" ? res.send({message: "Request success!"}) : res.send({message: "Request failed!"})
     } else if (preq === "image") {
+      let iDesc: string = "";
+      if (decrypted_data.description === "failed") {iDesc = ""} else {iDesc = decrypted_data.description}
       const response = await database.add_image({
         image_id: decrypted_data.image_id,
         title: decrypted_data.title,
-        description: decrypted_data?.description || "",
+        description: iDesc,
         sender_id: decrypted_data.sender_id,
         tag_id: decrypted_data.tag_id,
         created_at: decrypted_data.created_at,
-        data: decrypted_data.data
+        data: decrypted_data.data,
+        data_hash: decrypted_data.data_hash
       });
       response === "success" ? res.send({message: "Request success!"}) : res.send({message: "Request failed!"})
     }
