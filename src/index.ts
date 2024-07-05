@@ -12,7 +12,7 @@ const app = express();
 
 const corsOptions = {
   origin: '*',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  optionsSuccessStatus: 200 
 };
 
 app.use(cors(corsOptions)); 
@@ -22,20 +22,11 @@ const apiLimiter = rateLimit({
   max: 500 // batas 100 permintaan per windowMs
 });
 
-/* const configFile = fs.readFileSync('server.config', 'utf8');
-const configuration = JSON.parse(configFile); */
-const port = 8080 //configuration.port;
-const address = "localhost"//configuration.address;
+const port = 8080
+const address = "localhost"
 
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
 
-/* 
-  JSON dari sisi klien
-  content: {
-    data: ...
-    ...: ...
-  }
-*/
 app.get('/', (request: Request, response: Response) => {
   return response.send({
     name: "Ethernity App Server",
@@ -58,7 +49,7 @@ app.route('/get/:request')
 
     const { content }: any = request.body;
     const request_data: any = await decrypt(content, secret_token);
-/*     if (request_data === 'failed') {
+/*  if (request_data === 'failed') {
       return res.status(400).send({ message: "Failed to decrypt data" });
     } Inactivate because still on development*/
     const decrypted_data = await request_data;
@@ -72,8 +63,8 @@ app.route('/get/:request')
         res.status(404).send({message: "There's something wrong with your body request!"})
       } 
       const data = await database.get_all_image({
-        offset: decrypted_data.offset, // Diambil dari baris data ke berapa
-        limit: decrypted_data.limit // Maksimal banyaknya data di ambil
+        offset: decrypted_data.offset,
+        limit: decrypted_data.limit 
       });
       const encryptedData = await encrypt(data, secret_token);
       res.status(200).send(encryptedData);
@@ -106,20 +97,6 @@ app.route('/get/:request')
   })
   
 app.use('/get/:request', apiLimiter);
-  /* 
-  type RequestData = {
-  user_name?: string;
-  password?: "string";
-  
-  image_id?: "string";
-  image_title?: string;
-  sender_id?: number;
-  image_description?: string;
-  image_data?: string;
-  tag_id?: number[];
-}; 
-Data yang seharusnya dimasukan melalui metode post ke dalam database
-*/
 
 app.route('/post/:request')
 .post(async(request: Request, response: Response) => {
