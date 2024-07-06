@@ -13,8 +13,8 @@ const { DATABASE_URL } = process.env
 } 
 const sql = postgres(DATABASE_URL, {
     ssl: false,
-    connect_timeout: 10,
-    idle_timeout: 20,
+    connect_timeout: 40,
+    idle_timeout: 40,
     max_lifetime: 60 * 30
 });
 
