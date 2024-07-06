@@ -53,6 +53,8 @@ SELECT
     images.sender_name,
     images.description,
     images.created_at,
+    image.width,
+    image.height,
     images.data,
     array_agg(tags.name) AS categories
 FROM 
