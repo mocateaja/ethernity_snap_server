@@ -40,7 +40,7 @@ EXECUTE FUNCTION formatted_user_id();
 INSERT INTO users (user_name, password, created_at)
         `,
   add_image: `
-INSERT INTO images (image_id, title, description, sender_id, sender_name, tag_id, created_at, data, data_hash)
+INSERT INTO images (image_id, title, description, sender_id, sender_name, tag_id, created_at, width, height, data, data_hash)
     `,
   add_tag: `
 INSERT INTO tags (tag)

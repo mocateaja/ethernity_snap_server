@@ -27,6 +27,8 @@ const database = {
     sender_id,
     tag_id,
     created_at,
+    width,
+    height,
     data,
     data_hash
   }: {
@@ -35,7 +37,7 @@ const database = {
     try {
       const response = await sql.unsafe(`
         ${sqlcmd.add_image}
-        VALUES ('${image_id}','${title}','${description}','${sender_id}',(SELECT user_name FROM users WHERE user_id = '${sender_id}'),ARRAY[${tag_id}],'${created_at}','${data}','${data_hash}')
+        VALUES ('${image_id}','${title}','${description}','${sender_id}',(SELECT user_name FROM users WHERE user_id = '${sender_id}'),ARRAY[${tag_id}],'${created_at}',${width},${height},'${data}','${data_hash}')
         ON CONFLICT (data_hash) DO NOTHING;
       `);
       return response ? "success" : "failed"

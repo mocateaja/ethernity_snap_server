@@ -75,7 +75,7 @@ const sendOverloadAllert = (res: Response) => {
 
 /* const configFile = fs.readFileSync('server.config', 'utf8');
 const config = JSON.parse(configFile); */
-const timeLimitSeconds = 2//config.time_limit_seconds;
+const timeLimitSeconds = 0//config.time_limit_seconds;
 const ip_json_path = 'data/ip.json';
 let spam_status: boolean;
 

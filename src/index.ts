@@ -104,10 +104,6 @@ app.route('/post/:request')
     const res = wrapResponse(response);
     await secureRouter(request, response);
     
-    //const request_data:any = (await encrypt(JSON.stringify(requestData), "HALO"));  // DARI SISI KLIEN  SERBELUM DI ENKRIPSI
-    //content = SESUDAH DI ENKRIPSI DAN DIMASUKAN KE DALAM OBJEK YANG BERNAMA content
-    //const t:any = await decrypt(request_data, "HALO"); // DARI SISI SERVER
-    
     const { content }: any = request.body;
     const request_data: any = await decrypt(content, secret_token);
     const decrypted_data = await request_data;
@@ -133,6 +129,8 @@ app.route('/post/:request')
         sender_id: decrypted_data.sender_id,
         tag_id: decrypted_data.tag_id,
         created_at: decrypted_data.created_at,
+        width: decrypted_data.width,
+        height: decrypted_data.height,
         data: decrypted_data.data,
         data_hash: decrypted_data.data_hash
       });
