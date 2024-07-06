@@ -53,8 +53,8 @@ SELECT
     images.sender_name,
     images.description,
     images.created_at,
-    image.width,
-    image.height,
+    images.width,
+    images.height,
     images.data,
     array_agg(tags.name) AS categories
 FROM 
@@ -68,6 +68,8 @@ GROUP BY
     images.sender_name, 
     images.description, 
     images.created_at, 
+    images.width,
+    images.height,
     images.data
 ORDER BY created_at DESC
     `,

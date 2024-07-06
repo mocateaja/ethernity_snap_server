@@ -94,7 +94,9 @@ const database = {
           images.title, 
           images.sender_id, 
           images.sender_name, 
-          images.description, 
+          images.description,
+          images.width,
+          images.height, 
           images.created_at, 
           images.data
         ORDER BY 
