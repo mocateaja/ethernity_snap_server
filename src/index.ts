@@ -58,42 +58,44 @@ app.route('/get/:request')
     //const request_data:any = await encrypt(JSON.stringify(content), "HALO")
     //res.send(request_data)
   
-    if (preq === "images") {
-       if (!decrypted_data.offset && !decrypted_data.limit) {
-        res.status(404).send({message: "There's something wrong with your body request!"})
-      } 
-      const data = await database.get_all_image({
-        offset: decrypted_data.offset,
-        limit: decrypted_data.limit 
-      });
-      const encryptedData = await encrypt(data, secret_token);
-      res.status(200).send(encryptedData);
-    } else if (preq === "tags") {
-      const data = await database.get_all_tag();
-      res.status(200).send(data);
-    } else if (preq === "search") {
-      const data = await database.search_image({ key: decrypted_data.search_key })
-      const encryptedData = await encrypt(data, secret_token);
-      res.status(200).send(encryptedData);
-    } else if (preq === "check_user_account") {
-      const data = await database.check_user_account({
-        user_id: decrypted_data.user_id,
-        password: decrypted_data.password
-      })
-      const encryptedData = await encrypt(data, secret_token);
-      res.status(200).send(encryptedData)
-    } else if (preq === "signin") {
-      const data = await database.signin({
-        user_name: decrypted_data.user_name,
-        password: decrypted_data.password
-      })
-      const encryptedData = await encrypt(data, secret_token);
-      res.status(200).send(encryptedData)
+    if (decrypted_data) {
+      if (preq === "images") {
+        if (!decrypted_data.offset && !decrypted_data.limit) {
+          res.status(404).send({message: "There's something wrong with your body request!"})
+        } 
+        const data = await database.get_all_image({
+          offset: decrypted_data.offset,
+          limit: decrypted_data.limit 
+        });
+        const encryptedData = await encrypt(data, secret_token);
+        res.status(200).send(encryptedData);
+      } else if (preq === "tags") {
+        const data = await database.get_all_tag();
+        res.status(200).send(data);
+      } else if (preq === "search") {
+        const data = await database.search_image({ key: decrypted_data.search_key })
+        const encryptedData = await encrypt(data, secret_token);
+        res.status(200).send(encryptedData);
+      } else if (preq === "check_user_account") {
+        const data = await database.check_user_account({
+          user_id: decrypted_data.user_id,
+          password: decrypted_data.password
+        })
+        const encryptedData = await encrypt(data, secret_token);
+        res.status(200).send(encryptedData)
+      } else if (preq === "signin") {
+        const data = await database.signin({
+          user_name: decrypted_data.user_name,
+          password: decrypted_data.password
+        })
+        const encryptedData = await encrypt(data, secret_token);
+        res.status(200).send(encryptedData)
+      }
+      //else if (preq === "start") await database.start() // Hanya utnuk awalan saja! Dan akan segera dihapus setelah tabel dibuat
+      //else if (preq === "encrypt") {res.status(200).send(await encrypt(request.body, secret_token))}
+      //else if (preq === "decrypt") {res.status(200).send(await decrypt(content, secret_token))}
+      res.status(404).send({message: "Unable to find your request!"})
     }
-    //else if (preq === "start") await database.start() // Hanya utnuk awalan saja! Dan akan segera dihapus setelah tabel dibuat
-    //else if (preq === "encrypt") {res.status(200).send(await encrypt(request.body, secret_token))}
-    //else if (preq === "decrypt") {res.status(200).send(await decrypt(content, secret_token))}
-    res.status(404).send({message: "Unable to find your request!"})
   })
   
 app.use('/get/:request', apiLimiter);
