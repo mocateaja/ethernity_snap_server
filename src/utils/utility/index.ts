@@ -177,6 +177,8 @@ const decrypt = async (value: any, secret_token: string) => {
 
 const { PRIMARY_TOKEN, SECONDARY_TOKEN } = process.env;
 
+// DANGEROUS! SET LIKE THIS BECAUSE SOME BUG
+
 const selectToken = () => {
   const timestamp = Math.floor(Date.now() / 1000);
   return timestamp % 2 !== 0 ? "CryoPassIntegralEtherity" : "XiloemPassIntegralNovari";
