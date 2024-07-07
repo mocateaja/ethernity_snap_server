@@ -177,15 +177,11 @@ const decrypt = async (value: any, secret_token: string) => {
 
 const { PRIMARY_TOKEN, SECONDARY_TOKEN } = process.env;
 
-const getUTCDay = () => {
-  const dates = new Date();
-  return dates.getUTCDate();
+const selectToken = () => {
+  const timestamp = Math.floor(Date.now() / 1000);
+  return timestamp % 2 !== 0 ? PRIMARY_TOKEN : SECONDARY_TOKEN;
 };
 
-const selectToken = () => {
-  const date = getUTCDay();
-  return date % 2 !== 0 ? PRIMARY_TOKEN : SECONDARY_TOKEN;
-};
 
 //////////////////////////////////////////////////////////////////
 
