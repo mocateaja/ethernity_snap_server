@@ -59,38 +59,59 @@ app.route('/get/:request')
     //res.send(request_data)
   
     if (decrypted_data) {
-      if (preq === "images") {
-        if (!decrypted_data.offset && !decrypted_data.limit) {
-          res.status(404).send({message: "There's something wrong with your body request!"})
-        } 
-        const data = await database.get_all_image({
-          offset: decrypted_data.offset,
-          limit: decrypted_data.limit 
-        });
-        const encryptedData = await encrypt(data, secret_token);
-        res.status(200).send(encryptedData);
-      } else if (preq === "tags") {
-        const data = await database.get_all_tag();
-        res.status(200).send(data);
-      } else if (preq === "search") {
-        const data = await database.search_image({ key: decrypted_data.search_key })
-        const encryptedData = await encrypt(data, secret_token);
-        res.status(200).send(encryptedData);
-      } else if (preq === "check_user_account") {
-        const data = await database.check_user_account({
-          user_id: decrypted_data.user_id,
-          password: decrypted_data.password
-        })
-        const encryptedData = await encrypt(data, secret_token);
-        res.status(200).send(encryptedData)
-      } else if (preq === "signin") {
-        const data = await database.signin({
-          user_name: decrypted_data.user_name,
-          password: decrypted_data.password
-        })
-        const encryptedData = await encrypt(data, secret_token);
-        res.status(200).send(encryptedData)
+      switch (preq) {
+        case "images":
+          if (!decrypted_data.offset && !decrypted_data.limit) {
+            res.status(404).send({ message: "There's something wrong with your body request!" });
+          } else {
+            const data = await database.get_all_image({
+              offset: decrypted_data.offset,
+              limit: decrypted_data.limit,
+            });
+            const encryptedData = await encrypt(data, secret_token);
+            res.status(200).send(encryptedData);
+          }
+          break;
+      
+        case "specfic_image":
+          const data = await database.specific_image(content.search_key);
+          const encryptedData = await encrypt(data, "EMERGENCY"); // JUST USED FOR EMERGENCY BECAUSE THE BUGS!
+          res.status(200).send(encryptedData);
+          break;
+      
+        case "tags":
+          const dataTags = await database.get_all_tag();
+          res.status(200).send(dataTags);
+          break;
+      
+        case "search":
+          const dataSearch = await database.search_image({ key: decrypted_data.search_key });
+          const encryptedDataSearch = await encrypt(dataSearch, secret_token);
+          res.status(200).send(encryptedDataSearch);
+          break;
+      
+        case "check_user_account":
+          const dataCheckUser = await database.check_user_account({
+            user_id: decrypted_data.user_id,
+            password: decrypted_data.password,
+          });
+          const encryptedDataCheckUser = await encrypt(dataCheckUser, secret_token);
+          res.status(200).send(encryptedDataCheckUser);
+          break;
+      
+        case "signin":
+          const dataSignin = await database.signin({
+            user_name: decrypted_data.user_name,
+            password: decrypted_data.password,
+          });
+          const encryptedDataSignin = await encrypt(dataSignin, secret_token);
+          res.status(200).send(encryptedDataSignin);
+          break;
+      
+        default:
+          res.status(404).send({ message: "Invalid request type!" });
       }
+      
       //else if (preq === "start") await database.start() // Hanya utnuk awalan saja! Dan akan segera dihapus setelah tabel dibuat
       //else if (preq === "encrypt") {res.status(200).send(await encrypt(request.body, secret_token))}
       //else if (preq === "decrypt") {res.status(200).send(await decrypt(content, secret_token))}
