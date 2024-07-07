@@ -177,14 +177,15 @@ const decrypt = async (value: any, secret_token: string) => {
 
 const { PRIMARY_TOKEN, SECONDARY_TOKEN } = process.env;
 
+const dates = new Date();
+const date = dates.getUTCDate();
+
 const selectToken = () => {
-/* 
-  DEACTIVATED BECAUSE SOME BUG!
-  let dates = new Date();
-  let date = dates.getUTCDate();
-  if (date % 2 !== 0) return PRIMARY_TOKEN; // Ganjil
-   */
-  return SECONDARY_TOKEN; // Ganjil
+  if (date % 2 !== 0) {
+    return PRIMARY_TOKEN; // Ganjil
+  } else {
+    return SECONDARY_TOKEN; // Ganjil
+  }
 };
 
 //////////////////////////////////////////////////////////////////
