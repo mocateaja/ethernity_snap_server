@@ -61,12 +61,12 @@ app.route('/get/:request')
     if (decrypted_data) {
       switch (preq) {
         case "images":
-          if (!decrypted_data.offset && !decrypted_data.limit) {
+          if (!content.offset && !content.limit) {
             res.status(404).send({ message: "There's something wrong with your body request!" });
           } else {
             const data = await database.get_all_image({
-              offset: decrypted_data.offset,
-              limit: decrypted_data.limit,
+              offset: content.offset,
+              limit: content.limit,
             });
             const encryptedData = await encrypt(data, secret_token);
             res.status(200).send(encryptedData);
