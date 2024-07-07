@@ -75,7 +75,7 @@ app.route('/get/:request')
       
         case "specfic_image":
           const data = await database.specific_image(content.search_key);
-          const encryptedData = await encrypt(data, "EMERGENCY"); // JUST USED FOR EMERGENCY BECAUSE THE BUGS!
+          const encryptedData = await encrypt(data, "EMERGENCY"); // JUST USED FOR EMERGENCY BECAUSE THE BUG!
           res.status(200).send(encryptedData);
           break;
       
@@ -107,6 +107,8 @@ app.route('/get/:request')
           const encryptedDataSignin = await encrypt(dataSignin, secret_token);
           res.status(200).send(encryptedDataSignin);
           break;
+        case "decrypt":
+          res.status(200).send(await decrypt(content, secret_token))
       
         default:
           res.status(404).send({ message: "Invalid request type!" });
