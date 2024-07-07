@@ -29,7 +29,6 @@ const json = {
   write: (filePath: string, data: any) => {
     try {
       fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
-      console.log('JSON data saved to', filePath);
     } catch (err) {
       console.error('Error writing JSON to file:', err);
     }
@@ -73,9 +72,7 @@ const sendOverloadAllert = (res: Response) => {
 
 //////////////////////////////////////////////////////////////////
 
-/* const configFile = fs.readFileSync('server.config', 'utf8');
-const config = JSON.parse(configFile); */
-const timeLimitSeconds = 0//config.time_limit_seconds;
+const timeLimitSeconds = 0
 const ip_json_path = 'data/ip.json';
 let spam_status: boolean;
 
@@ -110,6 +107,8 @@ const checkSpam = (res: Response, userIp: string | string[] | undefined) => {
 const secureRouter = async (req: Request, res: Response): Promise<void> => {
   const userIp: string | string[] | undefined =
     req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+
+  console.log(`Request from ${userIp}`)
 
   const data = await json.read(ip_json_path);
   if (!data) {
@@ -175,7 +174,7 @@ const decrypt = async (value: any, secret_token: string) => {
 
 //////////////////////////////////////////////////////////////////
 
-const { PRIMARY_TOKEN, SECONDARY_TOKEN } = process.env;
+//const { PRIMARY_TOKEN, SECONDARY_TOKEN } = process.env;
 
 // DANGEROUS! SET LIKE THIS BECAUSE SOME BUG
 

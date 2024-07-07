@@ -23,7 +23,6 @@ const apiLimiter = rateLimit({
 });
 
 const port = 8080
-const address = "localhost"
 
 app.use(express.json({limit: '50mb'}));
 
@@ -53,14 +52,11 @@ app.route('/get/:request')
       return res.status(400).send({ message: "Failed to decrypt data" });
     } Inactivate because still on development*/
     const decrypted_data = await request_data;
-    
-    //Purpose for debugging only. Do not activate this code!
-    //const request_data:any = await encrypt(JSON.stringify(content), "HALO")
-    //res.send(request_data)
   
     if (decrypted_data) {
       switch (preq) {
         case "images":
+          console.log(`Request: get/images`)
           if (!content.offset && !content.limit) {
             res.status(404).send({ message: "There's something wrong with your body request!" });
           } else {
@@ -74,23 +70,27 @@ app.route('/get/:request')
           break;
       
         case "specfic_image":
+          console.log(`Request: get/specfic_image`)
           const data = await database.specific_image(content.search_key);
           const encryptedData = await encrypt(data, "EMERGENCY"); // JUST USED FOR EMERGENCY BECAUSE THE BUG!
           res.status(200).send(encryptedData);
           break;
       
         case "tags":
+          console.log(`Request: get/tags`)
           const dataTags = await database.get_all_tag();
           res.status(200).send(dataTags);
           break;
       
         case "search":
+          console.log(`Request: get/search`)
           const dataSearch = await database.search_image({ key: decrypted_data.search_key });
           const encryptedDataSearch = await encrypt(dataSearch, secret_token);
           res.status(200).send(encryptedDataSearch);
           break;
       
         case "check_user_account":
+          console.log(`Request: get/check_user_account`)
           const dataCheckUser = await database.check_user_account({
             user_id: decrypted_data.user_id,
             password: decrypted_data.password,
@@ -100,6 +100,7 @@ app.route('/get/:request')
           break;
       
         case "signin":
+          console.log(`Request: get/signin`)
           const dataSignin = await database.signin({
             user_name: decrypted_data.user_name,
             password: decrypted_data.password,
@@ -107,10 +108,9 @@ app.route('/get/:request')
           const encryptedDataSignin = await encrypt(dataSignin, secret_token);
           res.status(200).send(encryptedDataSignin);
           break;
-        case "decrypt":
-          res.status(200).send(await decrypt(content, secret_token))
       
         default:
+          console.log(`Request: Invalid request type`)
           res.status(404).send({ message: "Invalid request type!" });
       }
       
@@ -138,6 +138,7 @@ app.route('/post/:request')
     }   */
     
     if (preq === "user") {
+      console.log(`Request: post/user`)
       const response = await database.add_user({
         user_name: decrypted_data.user_name,
         password: decrypted_data.password,
@@ -145,6 +146,7 @@ app.route('/post/:request')
       });
       response === "success" ? res.send({message: "Request success!"}) : res.send({message: "Request failed!"})
     } else if (preq === "image") {
+      console.log(`Request: post/image`)
       let iDesc: string = "";
       if (decrypted_data.description === "failed") {iDesc = ""} else {iDesc = decrypted_data.description}
       const response = await database.add_image({
