@@ -47,7 +47,7 @@ app.route('/get/:request')
     const res = wrapResponse(response);
     await secureRouter(request, response);
 
-    const { content }: any = request.body;
+    const { content }: any = await request.body;
     const request_data: any = await decrypt(content, secret_token);
 /*  if (request_data === 'failed') {
       return res.status(400).send({ message: "Failed to decrypt data" });
