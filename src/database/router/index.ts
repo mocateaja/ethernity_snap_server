@@ -80,15 +80,27 @@ const database = {
         ${sqlcmd.specific_image}
         WHERE image_id = '${search_key}'
         GROUP BY 
-          images.image_id, 
-          images.title, 
-          images.sender_id, 
-          images.sender_name, 
-          images.description, 
-          images.created_at, 
-          images.width,
-          images.height,
+          images.image_id,
           images.data
+      `);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  get_all_image_data: async() => {
+    try {
+      const data = await sql.unsafe(`
+    SELECT 
+      images.image_id,
+      images.data,
+      images.data_hash
+    FROM 
+      images
+    GROUP BY 
+      images.image_id, 
+      images.data,
+      images.data_hash
       `);
       return data;
     } catch (error) {
@@ -123,6 +135,20 @@ const database = {
         ORDER BY 
           created_at DESC;    
       `);
+      return data
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  check_image: async({ image_hash } : { image_hash: string }) => {
+    try {
+      const data = await sql.unsafe(`
+        SELECT EXISTS (
+          SELECT 1
+          FROM images
+        WHERE data_hash = '${image_hash}'
+          ) as image_exist
+      `)
       return data
     } catch (error) {
       console.log(error);

@@ -55,6 +55,44 @@ SELECT
   images.created_at,
   images.width,
   images.height,
+  images.data,
+  array_agg(tags.name) AS categories
+FROM 
+  images
+INNER JOIN 
+  tags ON tags.id = ANY(images.tag_id)
+GROUP BY 
+  images.image_id, 
+  images.title, 
+  images.sender_id, 
+  images.sender_name, 
+  images.description, 
+  images.created_at, 
+  images.width,
+  images.height,
+  images.data
+ORDER BY created_at DESC
+    `,
+  specific_image: `
+SELECT 
+  images.image_id,
+  images.data
+FROM 
+  images
+  `,
+  get_all_tag: `
+SELECT * FROM tags;
+    `,
+  search_image: `
+SELECT 
+  images.image_id,
+  images.title,
+  images.sender_id,
+  images.sender_name,
+  images.description,
+  images.created_at,
+  images.width,
+  images.height,
   array_agg(tags.name) AS categories
 FROM 
   images
@@ -69,42 +107,6 @@ GROUP BY
   images.created_at, 
   images.width,
   images.height
-ORDER BY created_at DESC
-    `,
-  specific_image: `
-SELECT 
-  images.image_id,
-  images.title,
-  images.sender_id,
-  images.sender_name,
-  images.description,
-  images.created_at,
-  images.width,
-  images.height,
-  images.data,
-  array_agg(tags.name) AS categories
-FROM 
-  images
-INNER JOIN 
-  tags ON tags.id = ANY(images.tag_id)
-  `,
-  get_all_tag: `
-SELECT * FROM tags;
-    `,
-  search_image: `
-SELECT 
-    images.image_id,
-    images.title,
-    images.sender_id,
-    images.sender_name,
-    images.description,
-    images.created_at,
-    images.data,
-    array_agg(tags.name) AS categories
-FROM 
-    images
-INNER JOIN 
-    tags ON tags.id = ANY(images.tag_id)
     `,
     check_user_account: `
 SELECT EXISTS (

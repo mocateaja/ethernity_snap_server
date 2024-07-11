@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import fs from 'fs';
+import fs from 'fs'
+import path from 'path'
 import CryptoJS from 'crypto-js';
 
 //////////////////////////////////////////////////////////////////
@@ -17,9 +18,9 @@ const generateRandomString = (length: number) => {
 //////////////////////////////////////////////////////////////////
 
 const json = {
-  read: (filePath: string) => {
+  read: async(filePath: string) => {
     try {
-      const data = fs.readFileSync(filePath, 'utf8');
+      const data = await fs.readFileSync(filePath, 'utf8');
       return JSON.parse(data);
     } catch (err) {
       console.error('Error reading JSON from file:', err);
@@ -76,10 +77,10 @@ const timeLimitSeconds = 0
 const ip_json_path = 'data/ip.json';
 let spam_status: boolean;
 
-const checkSpam = (res: Response, userIp: string | string[] | undefined) => {
+const checkSpam = async(res: Response, userIp: string | string[] | undefined) => {
   const wrappedRes = wrapResponse(res);
   const newTimestamp: number = Math.floor(new Date().getTime() / 1000);
-  const data = json.read(ip_json_path);
+  const data = await json.read(ip_json_path);
   if (!data) {
     wrappedRes.status(500).send({ message: 'Error reading JSON data' });
     spam_status = true;
@@ -104,7 +105,7 @@ const checkSpam = (res: Response, userIp: string | string[] | undefined) => {
 
 //////////////////////////////////////////////////////////////////
 
-const secureRouter = async (req: Request, res: Response): Promise<void> => {
+const secureRouter = async(req: Request, res: Response): Promise<void> => {
   const userIp: string | string[] | undefined =
     req.headers['x-forwarded-for'] || req.socket.remoteAddress;
 
@@ -118,7 +119,7 @@ const secureRouter = async (req: Request, res: Response): Promise<void> => {
     data.ip_address = [];
   }
 
-  checkSpam(res, userIp);
+  await checkSpam(res, userIp);
 };
 
 //////////////////////////////////////////////////////////////////
@@ -201,5 +202,9 @@ const timestamp = () => {
   const formattedTimestamp = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds}`;
   return formattedTimestamp
 }
+
+//////////////////////////////////////////////////////////////////
+
+
 
 export { generateRandomString, secureRouter, wrapResponse, selectToken, encrypt, decrypt, timestamp };

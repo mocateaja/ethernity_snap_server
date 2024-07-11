@@ -5,6 +5,7 @@ import { secureRouter, wrapResponse, selectToken, encrypt, decrypt } from './uti
 import database from './database/router';
 import rateLimit from 'express-rate-limit'
 import cors from 'cors'
+import uploadImage from './database/cloud';
 
 const secret_token = selectToken() || '';
 
@@ -149,19 +150,30 @@ app.route('/post/:request')
       console.log(`Request: post/image`)
       let iDesc: string = "";
       if (decrypted_data.description === "failed") {iDesc = ""} else {iDesc = decrypted_data.description}
-      const response = await database.add_image({
-        image_id: decrypted_data.image_id,
-        title: decrypted_data.title,
-        description: iDesc,
-        sender_id: decrypted_data.sender_id,
-        tag_id: decrypted_data.tag_id,
-        created_at: decrypted_data.created_at,
-        width: decrypted_data.width,
-        height: decrypted_data.height,
-        data: decrypted_data.data,
-        data_hash: decrypted_data.data_hash
-      });
-      response === "success" ? res.send({message: "Request success!"}) : res.send({message: "Request failed!"})
+      const check_image: any | any[] = await database.check_image({ image_hash: decrypted_data.data_hash })
+      if (check_image[0]?.image_exist === false) {
+        const upload_image = await uploadImage(decrypted_data.data, decrypted_data.image_id)
+        if (upload_image) {
+          const response = await database.add_image({
+            image_id: decrypted_data.image_id,
+            title: decrypted_data.title,
+            description: iDesc,
+            sender_id: decrypted_data.sender_id,
+            tag_id: decrypted_data.tag_id,
+            created_at: decrypted_data.created_at,
+            width: decrypted_data.width,
+            height: decrypted_data.height,
+            data: `https://res.cloudinary.com/crimea/image/upload/f_auto,q_auto/v1/ethernity_snap_data/${decrypted_data.image_id}`,
+            data_hash: decrypted_data.data_hash
+          });
+          if (response === "success") {
+            res.send({message: "Request success!"})
+          } else {
+            res.send({message: "Request failed!"})
+          }
+        }
+      }
+      res.send({message: "Request success!"})
     }
 
     res.status(404).send({message: "Unable to find your request!"})
