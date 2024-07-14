@@ -20,31 +20,6 @@ After encryption (sent to API):
     content: "encrypted_data"
 }
 
-## Endpoints
-
-### GET Requests
-
-1. Get All Images (with pagination)
-   - URL: endpoint/get/images
-   - Body: { offset: number, limit: number }
-
-2. Search Image
-   - URL: endpoint/get/search
-   - Body: { key: string }
-
-3. Get All Tags
-   - URL: endpoint/get/tags
-
-### POST Requests
-
-1. Create User
-   - URL: endpoint/post/user
-   - Body: { user_name: string, password: string, created_at: string }
-
-2. Create Image
-   - URL: endpoint/post/image
-   - Body: { image_id: string (10), title: string, description: string | "", sender_id: string, tag_id: array, created_at: string }
-
 ## Example Request
 
 Encrypted data: 
