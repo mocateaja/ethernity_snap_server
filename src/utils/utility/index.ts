@@ -181,8 +181,8 @@ const { PRIMARY_TOKEN, SECONDARY_TOKEN } = process.env;
 
 const selectToken = () => {
   const date = new Date();
-  const day = date.getDate();
-  const month = date.getMonth() + 1;
+  const day = date.getUTCDate();
+  const month = date.getUTCMonth() + 1;
   const uniqueValue = day * 100 + month; 
   return uniqueValue % 2 !== 0 ? PRIMARY_TOKEN : SECONDARY_TOKEN;
 };
