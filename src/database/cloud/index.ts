@@ -14,6 +14,7 @@ cloudinary.v2.config({
     api_key: CLOUDINARY_API_KEY,
     api_secret: CLOUDINARY_API_SECRET,
     secure: true,
+
 });
 
 const uploadImage = async(data: string, public_id: string): Promise<any> => {
@@ -27,6 +28,7 @@ const uploadImage = async(data: string, public_id: string): Promise<any> => {
         return true
     } catch (error) {
         console.log(error)
+        return error
     }
 }
 

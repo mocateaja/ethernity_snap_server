@@ -175,14 +175,18 @@ const decrypt = async (value: any, secret_token: string) => {
 
 //////////////////////////////////////////////////////////////////
 
-//const { PRIMARY_TOKEN, SECONDARY_TOKEN } = process.env;
+const { PRIMARY_TOKEN, SECONDARY_TOKEN } = process.env;
 
 // DANGEROUS! SET LIKE THIS BECAUSE SOME BUG
 
 const selectToken = () => {
-  const timestamp = Math.floor(Date.now() / 1000);
-  return timestamp % 2 !== 0 ? "CryoPassIntegralEtherity" : "XiloemPassIntegralNovari";
+  const date = new Date();
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const uniqueValue = day * 100 + month; 
+  return uniqueValue % 2 !== 0 ? PRIMARY_TOKEN : SECONDARY_TOKEN;
 };
+
 
 
 //////////////////////////////////////////////////////////////////

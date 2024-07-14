@@ -70,10 +70,10 @@ app.route('/get/:request')
           }
           break;
       
-        case "specfic_image":
-          console.log(`Request: get/specfic_image`)
+        case "specific_image":
+          console.log(`Request: get/specific_image`)
           const data = await database.specific_image(content.search_key);
-          const encryptedData = await encrypt(data, "EMERGENCY"); // JUST USED FOR EMERGENCY BECAUSE THE BUG!
+          const encryptedData = await encrypt(data, secret_token); 
           res.status(200).send(encryptedData);
           break;
       
@@ -153,7 +153,7 @@ app.route('/post/:request')
       const check_image: any | any[] = await database.check_image({ image_hash: decrypted_data.data_hash })
       if (check_image[0]?.image_exist === false) {
         const upload_image = await uploadImage(decrypted_data.data, decrypted_data.image_id)
-        if (upload_image) {
+        if (upload_image === true) {
           const response = await database.add_image({
             image_id: decrypted_data.image_id,
             title: decrypted_data.title,
@@ -171,6 +171,8 @@ app.route('/post/:request')
           } else {
             res.send({message: "Request failed!"})
           }
+        } else {
+          res.send({message: upload_image})
         }
       }
       res.send({message: "Request success!"})
