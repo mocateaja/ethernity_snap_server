@@ -1,7 +1,13 @@
 import { Request, Response } from 'express';
 import fs from 'fs'
-import path from 'path'
 import CryptoJS from 'crypto-js';
+import { config } from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+import path from 'path';
+config({ path: path.resolve(__dirname, '../../../.env.local') });
 
 //////////////////////////////////////////////////////////////////
 
