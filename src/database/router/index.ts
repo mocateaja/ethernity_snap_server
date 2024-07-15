@@ -80,7 +80,14 @@ const database = {
         ${sqlcmd.specific_image}
         WHERE image_id = '${search_key}'
         GROUP BY 
-          images.image_id,
+          images.image_id, 
+          images.title, 
+          images.sender_id, 
+          images.sender_name, 
+          images.description, 
+          images.created_at, 
+          images.width,
+          images.height,
           images.data
       `);
       return data;
