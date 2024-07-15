@@ -74,18 +74,20 @@ GROUP BY
 ORDER BY created_at DESC
     `,
   specific_image: `
-SELECT 
-  images.image_id, 
-  images.title, 
-  images.sender_id, 
-  images.sender_name, 
-  images.description, 
-  images.created_at, 
+SELECT
+  images.image_id,
+  images.title,
+  images.sender_id,
+  images.sender_name,
+  images.description,
+  images.created_at,
   images.width,
   images.height,
-  images.data
-FROM 
+  images.data,
+  array_agg(tags.name) as categories
+FROM
   images
+  INNER JOIN tags on tags.id = any (images.tag_id)
   `,
   get_all_tag: `
 SELECT * FROM tags;
