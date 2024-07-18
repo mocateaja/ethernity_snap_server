@@ -1,7 +1,7 @@
 import { config } from 'dotenv';
 config();
 import express, { Request, Response } from 'express';
-import { secureRouter, wrapResponse, selectToken, encrypt, decrypt } from './utils/utility';
+import { secureRouter, wrapResponse, selectToken, encrypt, decrypt, secretURL } from './utils/utility';
 import database from './database/router';
 import rateLimit from 'express-rate-limit'
 import cors from 'cors'
@@ -39,15 +39,15 @@ app.get('/', (request: Request, response: Response) => {
 app.route('/get/:request')
   .get(async(request: Request, response: Response) => {
     const res = wrapResponse(response);
-    await secureRouter(request, response);
+    const { ip_address }: any = await request.body;
+    await secureRouter(ip_address, response);
     res.send({message: "Method not allowed!"});
   })
   .post(async(request: Request, response: Response) => {
     const preq = request.params.request;
     const res = wrapResponse(response);
-    await secureRouter(request, response);
-
-    const { content }: any = await request.body;
+    const { ip_address, content }: any = await request.body;
+    await secureRouter(ip_address, response);
     const request_data: any = await decrypt(content, secret_token);
 /*  if (request_data === 'failed') {
       return res.status(400).send({ message: "Failed to decrypt data" });
@@ -128,9 +128,8 @@ app.route('/post/:request')
 .post(async(request: Request, response: Response) => {
     const preq = request.params.request;
     const res = wrapResponse(response);
-    await secureRouter(request, response);
-    
-    const { content }: any = request.body;
+    const { ip_address, content }: any = await request.body;
+    await secureRouter(ip_address, response);
     const request_data: any = await decrypt(content, secret_token);
     const decrypted_data = await request_data;
     /*     
@@ -163,7 +162,7 @@ app.route('/post/:request')
             created_at: decrypted_data.created_at,
             width: decrypted_data.width,
             height: decrypted_data.height,
-            data: `https://res.cloudinary.com/crimea/image/upload/f_auto,q_auto/v1/ethernity_snap_data/${decrypted_data.image_id}`,
+            data: `${secretURL}${decrypted_data.image_id}`,
             data_hash: decrypted_data.data_hash
           });
           if (response === "success") {
@@ -182,7 +181,8 @@ app.route('/post/:request')
   })
   .get(async(request: Request, response: Response) => {
     const res = wrapResponse(response);
-    await secureRouter(request, response);
+    const { ip_address }: any = request.body;
+    await secureRouter(ip_address, response);
     res.send({message: "Method not allowed!"});
   })
 app.use('/post/:request', apiLimiter);
